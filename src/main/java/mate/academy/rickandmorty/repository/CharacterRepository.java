@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CharacterRepository extends JpaRepository<Character, Long> {
-    List<Character> findByName(String name);
+    List<Character> findByNameContaining(String name);
 }

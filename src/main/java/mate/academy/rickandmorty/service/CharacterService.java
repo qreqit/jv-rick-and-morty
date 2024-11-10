@@ -2,8 +2,10 @@ package mate.academy.rickandmorty.service;
 
 import jakarta.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
+import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.internal.ResponceCharacterDto;
+import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@RequiredArgsConstructor
 public class CharacterService {
+    private final CharacterMapper characterMapper;
 
     private static final String EXTERNAL_API_URL = "https://rickandmortyapi.com/api/character";
 
@@ -32,14 +36,18 @@ public class CharacterService {
         }
     }
 
-    public Character getRandomCharacter() {
+    public ResponceCharacterDto getRandomCharacter() {
         long totalNumOfCharacters = 826L;
         long randomId = new Random().nextLong(totalNumOfCharacters);
-        Optional<Character> character = characterRepository.findById(randomId);
-        return character.orElse(null);
+        Character character = characterRepository.findById(randomId)
+                .orElseThrow(() -> new  IllegalArgumentException("User not found with id: " + randomId));
+        return characterMapper.toDto(character);
     }
 
-    public List<Character> searchCharactersByName(String name) {
-        return characterRepository.findByName(name);
+    public List<ResponceCharacterDto> searchCharactersByName(String name) {
+        List<Character> characters = characterRepository.findByNameContaining(name);
+        return characters.stream()
+                .map(characterMapper::toDto)
+                .toList();
     }
 }

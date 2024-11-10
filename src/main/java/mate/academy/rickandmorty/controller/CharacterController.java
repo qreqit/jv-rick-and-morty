@@ -1,7 +1,8 @@
 package mate.academy.rickandmorty.controller;
 
 import java.util.List;
-import mate.academy.rickandmorty.model.Character;
+
+import mate.academy.rickandmorty.dto.internal.ResponceCharacterDto;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,12 @@ public class CharacterController {
     private CharacterService characterService;
 
     @GetMapping("/random")
-    public Character getRandomCharacter() {
+    public ResponceCharacterDto getRandomCharacter() {
         return characterService.getRandomCharacter();
     }
 
     @GetMapping("/search")
-    public List<Character> searchCharactersByName(@RequestParam String name) {
+    public List<ResponceCharacterDto> searchCharactersByName(@RequestParam String name) {
         return characterService.searchCharactersByName(name);
     }
 }
