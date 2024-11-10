@@ -113,6 +113,8 @@
 					</execution>
 				</executions>
 				<configuration>
+					<includes>**/src/main/java/**</includes>
+					<excludes>**/target/generated-sources/**</excludes>
 					<configLocation>${maven.checkstyle.plugin.configLocation}</configLocation>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>
