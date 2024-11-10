@@ -33,11 +33,8 @@ public class CharacterService {
     }
 
     public Character getRandomCharacter() {
-        long count = characterRepository.count();
-        if (count == 0) {
-            return null;
-        }
-        long randomId = new Random().nextInt((int) count) + 1;
+        long totalNumOfCharacters = 826L;
+        long randomId = new Random().nextLong(totalNumOfCharacters);
         Optional<Character> character = characterRepository.findById(randomId);
         return character.orElse(null);
     }
