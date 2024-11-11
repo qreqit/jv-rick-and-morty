@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.external.CharacterDto;
 import mate.academy.rickandmorty.dto.internal.ResponceCharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
@@ -33,13 +34,14 @@ public class CharacterService {
             try {
                 while (true) {
                     String url = externalApiUrl + "?page=" + page;
-                    Character[] characters = restTemplate.getForObject(url, Character[].class);
+                    CharacterDto[] characterDtos = restTemplate.getForObject(url, CharacterDto[].class);
 
-                    if (characters == null || characters.length == 0) {
+                    if (characterDtos == null || characterDtos.length == 0) {
                         break;
                     }
 
-                    for (Character character : characters) {
+                    for (CharacterDto characterDto : characterDtos) {
+                        Character character = characterMapper.toEntity(characterDto);
                         allCharacters.add(character);
                     }
                     page++;
@@ -51,8 +53,9 @@ public class CharacterService {
         }
     }
 
+
     public ResponceCharacterDto getRandomCharacter() {
-        long totalNumOfCharacters = 826L;  // Consider making this configurable
+        long totalNumOfCharacters = 826L;
         long randomId = new Random().nextLong(totalNumOfCharacters) + 1;
 
         try {

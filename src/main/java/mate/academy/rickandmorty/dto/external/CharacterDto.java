@@ -1,9 +1,11 @@
 package mate.academy.rickandmorty.dto.external;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import java.util.List;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterDto {
     private int id;
     private String name;

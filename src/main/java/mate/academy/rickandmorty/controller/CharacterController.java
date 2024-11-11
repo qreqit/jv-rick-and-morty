@@ -1,6 +1,8 @@
 package mate.academy.rickandmorty.controller;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.ResponceCharacterDto;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/characters")
+@RequiredArgsConstructor
 public class CharacterController {
-
-    @Autowired
-    private CharacterService characterService;
+    private final CharacterService characterService;
 
     @GetMapping("/random")
     public ResponceCharacterDto getRandomCharacter() {
