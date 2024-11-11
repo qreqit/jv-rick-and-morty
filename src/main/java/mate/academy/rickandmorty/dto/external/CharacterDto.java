@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class CharacterDto {
     private OriginDto origin;
     private LocationDto location;
     private String image;
-    private List<String> episodes;
+    @JsonProperty("episode")
+    private List<String> episode;
     private String url;
     private String created;
 
