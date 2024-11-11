@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterDto;
+import mate.academy.rickandmorty.dto.internal.CharacterResponseInfoDto;
 import mate.academy.rickandmorty.dto.internal.ResponceCharacterDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
@@ -32,19 +33,19 @@ public class CharacterService {
             List<Character> allCharacters = new ArrayList<>();
 
             try {
-                while (true) {
-                    String url = externalApiUrl + "?page=" + page;
-                    CharacterDto[] characterDtos = restTemplate.getForObject(url, CharacterDto[].class);
+                String next = externalApiUrl + "?page=" + page;
+                while (next != null) {
+                    CharacterResponseInfoDto response = restTemplate.getForObject(next, CharacterResponseInfoDto.class);
 
-                    if (characterDtos == null || characterDtos.length == 0) {
+                    if (response == null || response.getResults() == null || response.getResults().isEmpty()) {
                         break;
                     }
 
-                    for (CharacterDto characterDto : characterDtos) {
+                    for (CharacterDto characterDto : response.getResults()) {
                         Character character = characterMapper.toEntity(characterDto);
                         allCharacters.add(character);
                     }
-                    page++;
+                    next = response.getInfo().getNext();
                 }
                 characterRepository.saveAll(allCharacters);
             } catch (HttpClientErrorException e) {
