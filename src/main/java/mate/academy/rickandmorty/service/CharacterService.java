@@ -75,12 +75,12 @@ public class CharacterService {
         String url = externalApiUrl + "?name=" + name;
 
         try {
-            Character[] characters = restTemplate.getForObject(url, Character[].class);
+            CharacterResponseInfoDto[] characters = restTemplate.getForObject(url, CharacterResponseInfoDto[].class);
             if (characters == null || characters.length == 0) {
                 return List.of();
             }
             return List.of(characters).stream()
-                    .map(characterMapper::toDto)
+                    .map(characterMapper::fromInfoToResponse)
                     .toList();
         } catch (HttpClientErrorException e) {
             System.err.println("Error searching characters by name: " + e.getMessage());
